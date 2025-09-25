@@ -26,3 +26,13 @@
    ```minikube service devops-projects-api-service```
 8. Get service details.
    ```kubectl describe service devops-projects-api-service```
+
+## Configuring Eslint
+1. Install dependencies
+   ```npm install eslint @eslint/js prettier eslint-config-prettier eslint-plugin-prettier -D```
+2. Create an eslint.config file(alongside package.json)
+   ```touch eslint.config```
+3. Create a .prettierrc file(alongside package.json)
+   ```touch .prettierrc```
+4. Create a .prettierignore file(alongside package.json)
+   ```touch .prettierignore```
