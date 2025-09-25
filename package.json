@@ -6,9 +6,13 @@
   "scripts": {
     "run": "node index.js",
     "test": "node test.js",
-    "dev": "node --watch src/index.js",
-    "start": "node src/index.js",
-    "deploy": "sh deploy.sh"
+    "dev": "node --watch --env-file=.env src/index.js",
+    "start": "node --env-file=.env src/index.js",
+    "deploy": "sh deploy.sh",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "keywords": [],
   "author": "",

@@ -2,12 +2,12 @@ name: CI PIPELINE
 
 on:
   push:
-    branches: [ main]
+    branches: [main]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout_code
         uses: actions/checkout@v5

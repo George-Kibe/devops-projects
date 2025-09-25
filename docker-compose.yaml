@@ -1,10 +1,10 @@
 services:
-  api: 
+  api:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: kubernetes-node-api
-    ports: 
+    ports:
       - "3000:3000"
     environment:
       NODE_ENV: production
