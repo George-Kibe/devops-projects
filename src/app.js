@@ -1,5 +1,5 @@
 import express from "express";
-
+console.log("Database URL: ", process.env.DATABASE_URL);
 const app = express();
 
 app.get("/", (req, res) => {
