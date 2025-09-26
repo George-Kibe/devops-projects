@@ -46,3 +46,8 @@ Morgan is a HTTP logger middleware for nodejs
 1. Install helmet
    ```npm install helmet morgan```
 2. Add configuration in app.js or index.js in the express applicattion
+   
+## Adding arject for Rate Limiting
+1. Create an account on arcjet website and add a project.
+2. Install arcjet.
+   ```npm install @arcjet/node @arcjet/inspect```
