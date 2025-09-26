@@ -3,7 +3,6 @@ import { eq } from "drizzle-orm";
 import logger from "#config/logger.js";
 import { db } from "#config/database.js";
 import { users } from "#models/user.model.js";
-import { email } from "zod";
 
 export const hashPassword = async password => {
   try {
