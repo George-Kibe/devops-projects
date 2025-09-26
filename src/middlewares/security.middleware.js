@@ -2,7 +2,7 @@ import aj from "#config/arcjet.js";
 import logger from "#config/logger.js";
 import { slidingWindow } from "@arcjet/node";
 
-export const securityMiddleware = async(req, res, next) => {
+export const securityMiddleware = async (req, res, next) => {
   try {
     const role = req.user?.role || "guest";
 
@@ -22,33 +22,49 @@ export const securityMiddleware = async(req, res, next) => {
         message = "Guest request limit exceeded (5 requests). Slow down";
         break;
     }
-    const client  = aj.withRule(slidingWindow({
-      mode: "LIVE",
-      interval: "1m",
-      max: limit,
-      message,
-      name: `${role}-rate-limit`
-    }));
+    const client = aj.withRule(
+      slidingWindow({
+        mode: "LIVE",
+        interval: "1m",
+        max: limit,
+        message,
+        name: `${role}-rate-limit`,
+      })
+    );
     const decision = await client.protect(req);
     if (decision.isDenied() && decision.reason.isBot()) {
-      logger.warn(`Bot detected: ${decision.reason}`, {ip: req.ip, userAgent: req.get["User-Agent"], path: req.path});
+      logger.warn(`Bot detected: ${decision.reason}`, {
+        ip: req.ip,
+        userAgent: req.get["User-Agent"],
+        path: req.path,
+      });
       return res.status(403).json({
         error: "Forbidden",
-        message: "Bot detected. Automated requests are not allowed!"
+        message: "Bot detected. Automated requests are not allowed!",
       });
     }
     if (decision.isDenied() && decision.reason.isShield()) {
-      logger.warn(`Shield Request Blocked : ${decision.reason}`, {ip: req.ip, userAgent: req.get["User-Agent"], path: req.path, method: req.method });
+      logger.warn(`Shield Request Blocked : ${decision.reason}`, {
+        ip: req.ip,
+        userAgent: req.get["User-Agent"],
+        path: req.path,
+        method: req.method,
+      });
       return res.status(403).json({
         error: "Forbidden",
-        message: "Request blocked by security policy!"
+        message: "Request blocked by security policy!",
       });
     }
     if (decision.isDenied() && decision.reason.isRateLimit()) {
-      logger.warn(`Rate Limit exceeded : ${decision.reason}`, {ip: req.ip, userAgent: req.get["User-Agent"], path: req.path, method: req.method });
+      logger.warn(`Rate Limit exceeded : ${decision.reason}`, {
+        ip: req.ip,
+        userAgent: req.get["User-Agent"],
+        path: req.path,
+        method: req.method,
+      });
       return res.status(403).json({
         error: "Forbidden",
-        message: "Too many requests!"
+        message: "Too many requests!",
       });
     }
     next();
@@ -56,7 +72,8 @@ export const securityMiddleware = async(req, res, next) => {
     console.error(`Arcject middleware error: ${error}`);
     res.status(500).json({
       error: "Internal server error",
-      message: "An error occurred while processing your request: security middlware."
+      message:
+        "An error occurred while processing your request: security middlware.",
     });
   }
 };

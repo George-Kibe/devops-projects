@@ -17,7 +17,6 @@ const aj = arcjet({
         // Uncomment to allow these other common bot categories
         // See the full list at https://arcjet.com/bot-list
         //"CATEGORY:MONITOR", // Uptime monitoring services
-       
       ],
     }),
     // Create a token bucket rate limit. Other algorithms are supported.

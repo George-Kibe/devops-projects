@@ -16,9 +16,8 @@
    `docker push georgekibe/react-docker`
 
 ## Running Tests with Jest
+
 1. Install jest as a dev dependency
-   ```npm install jest -D```
+   `npm install jest -D`
 2. Generate a basic configuration file for the tests.
-   ```npm init jest@latest``` and follow the prompts and get the jest.config.mjs.
-
-
+   `npm init jest@latest` and follow the prompts and get the jest.config.mjs.
