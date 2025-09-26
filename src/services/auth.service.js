@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 import logger from "#config/logger.js";
 import { db } from "#config/database.js";
 import {users} from "#models/user.model.js";
+import { email } from "zod";
 
 export const hashPassword = async (password) => {
   try {
@@ -24,7 +25,7 @@ export const comparePassword = async (password, hashedPassword) => {
 
 export const createUser = async({name, email, password, role="user"}) =>{
   try {
-    const existingUser = db.select().from(users).where(eq(users.email, email)).limit(1);
+    const existingUser = await db.select().from(users).where(eq(users.email, email)).limit(1);
     if (existingUser.length > 0) {
       throw new Error("User with this email already exists");
     }
@@ -45,5 +46,25 @@ export const createUser = async({name, email, password, role="user"}) =>{
   } catch (error) {
     logger.error(`Error creating user: ${error}`);
     throw new Error("Failed to create user");
+  }
+};
+
+export const authenticateUser = async({email, password}) => {
+  try {
+    const [ user ] = await db.select().from(users).where(eq(users.email, email)).limit(1);
+    if (!user) {
+      throw new Error("User not found");
+    }
+    const isPasswordValid = await comparePassword(password, user.password);
+    if (!isPasswordValid) {
+      throw new Error("Invalid password");
+    }
+    logger.info(`User ${user.email} authenticated successfully!`);
+    // strip password from user object
+    delete user.password;
+    return user;
+  } catch (error) {
+    logger.error(`Error authenticating user: ${error}`);
+    throw new Error("Failed to authenticate user");
   }
 };
